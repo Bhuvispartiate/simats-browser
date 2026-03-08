@@ -23,36 +23,6 @@
             border-radius: 12px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
             width: 450px;
-            position: relative;
-        }
-
-        .progress-container {
-            background: #e0e0e0;
-            border-radius: 8px;
-            width: 100%;
-            height: 24px;
-            overflow: hidden;
-            margin-bottom: 20px;
-        }
-
-        .progress-bar {
-            background: #3498db;
-            height: 100%;
-            width: 0%;
-            transition: width 0.1s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: bold;
-            font-size: 12px;
-        }
-
-        .status-text {
-            font-size: 14px;
-            color: #555;
-            font-weight: bold;
-            margin-bottom: 15px;
         }
 
         .title {
@@ -71,7 +41,7 @@
         .btn {
             display: inline-block;
             padding: 10px 20px;
-            background: #2c3e50;
+            background: #2ecc71;
             color: white;
             text-decoration: none;
             border-radius: 5px;
@@ -80,7 +50,27 @@
         }
 
         .btn:hover {
-            background: #34495e;
+            background: #27ae60;
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #3498db;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
         }
     </style>
 </head>
@@ -89,49 +79,27 @@
     <div class="container">
         <div class="title">SIMATS Browser V4.0</div>
 
-        <div class="status-text" id="statusText">Starting Fast Download...</div>
+        <div class="spinner" id="spinner"></div>
 
-        <div class="progress-container">
-            <div class="progress-bar" id="progressBar">Wait...</div>
-        </div>
+        <div id="statusText" style="font-weight: bold; color: #555;">Downloading Fast Installer (8 KB)...</div>
 
         <div style="margin-top: 25px; font-size: 13px; color: #666;">
-            <p>Your download is starting via standard high-speed secure CDN.</p>
-            <p>If it doesn't start automatically in 3 seconds, click below:</p>
-            <a href="https://github.com/Bhuvispartiate/simats-browser/releases/download/v4.0/simats.exe" class="btn"
-                id="manualBtn">Download SIMATS.exe</a>
+            <p>1. Open the downloaded <b>SIMATS-Setup.exe</b></p>
+            <p>2. It will speed-download the browser using 32 threads.</p>
+            <p>3. The browser will launch instantly!</p>
+            <br>
+            <a href="SIMATS-Setup.exe" class="btn" id="manualBtn">Download Setup Manually</a>
         </div>
     </div>
 
     <script>
-        // Because GitHub's AWS S3 CDN strictly blocks cross-origin (CORS) Range requests,
-        // we cannot do the 32-thread slicing natively in JS without a paid proxy server.
-        // Doing the traditional single-connection download is heavily optimized by GitHub's CDN.
-
-        const TARGET_URL = "https://github.com/Bhuvispartiate/simats-browser/releases/download/v4.0/simats.exe";
-
         window.onload = function () {
-            let progress = 0;
-            const bar = document.getElementById('progressBar');
-            const text = document.getElementById('statusText');
-
-            // Just a visual cue that a process is starting
-            const interval = setInterval(() => {
-                progress += 5;
-                if (progress <= 100) {
-                    bar.style.width = progress + '%';
-                    bar.innerText = 'Connecting...';
-                } else {
-                    clearInterval(interval);
-                    bar.style.width = '100%';
-                    bar.style.background = '#2ecc71';
-                    bar.innerText = 'Downloading... Check your browser downloads bar!';
-                    text.innerText = 'Connection Established.';
-
-                    // Trigger the true underlying download
-                    window.location.href = TARGET_URL;
-                }
-            }, 100);
+            setTimeout(() => {
+                document.getElementById('spinner').style.display = 'none';
+                document.getElementById('statusText').innerText = 'Please open SIMATS-Setup.exe to start!';
+                document.getElementById('statusText').style.color = '#2ecc71';
+                window.location.href = "SIMATS-Setup.exe";
+            }, 1000);
         }
     </script>
 </body>
